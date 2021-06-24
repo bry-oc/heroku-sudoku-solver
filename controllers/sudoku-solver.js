@@ -28,7 +28,7 @@ class SudokuSolver {
     let row = [];
     for(let i = 0; i < 9; i++) {
       for(let j = 0; j < 9; j++){
-        row.push(puzzleString[i * 9 + j]);
+        row.push(parseInt(puzzleString[i * 9 + j]));
       }
       board.push(row);
       row = [];
@@ -37,12 +37,21 @@ class SudokuSolver {
   }
 
   checkRowPlacement(board, row, column, value) {
-    
-
+    for(let i = 0; i <= 9; i++) {
+      if(board[row][i] === value && board[row][column] != value) {
+        return 'invalid row';
+      }
+    }
+    return 'valid';
   }
 
   checkColPlacement(board, row, column, value) {
-
+    for(let i = 0; i <= 9; i++) {
+      if(board[i][column] === value && board[row][column] != value) {
+        return 'invalid column';
+      }
+    }
+    return 'valid';
   }
 
   checkRegionPlacement(board, row, column, value) {
