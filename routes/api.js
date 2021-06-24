@@ -13,33 +13,34 @@ module.exports = function (app) {
     .post(upload.none(), (req, res) => {
       //check if a puzzle was sent and validate the format
       let puzzle = req.body.puzzle;
-      if(!puzzle) {
+      let coordinate = req.body.coordinate;
+      let value = parseInt(req.body.value);
+
+      if(!puzzle || !coordinate || !value) {
         return res.json({error: 'Required field missing'});
       }      
-      const validate = solver.validate(puzzle);
-      if(validate !== 'valid'){
-        if(validate === 'invalid char') {
+      const validatePuzzle = solver.validate(puzzle);
+      if(validatePuzzle !== 'valid'){
+        if(validatePuzzle === 'invalid char') {
           return res.json({ error: 'Invalid characters in puzzle' });
         }
-        if(validate === 'invalid length') {
+        if(validatePuzzle === 'invalid length') {
           return res.json({ error: 'Expected puzzle to be 81 characters long' });
         }
       }
       //populate the puzzle and board configuration
       solver.puzzleString = puzzle;
-      let board = [];
-      let row = [];
-      for(let i = 0; i < 9; i++) {
-        for(let j = 0; j < 9; j++){
-          row.push(solver.puzzleString[i * 9 +j]);
-        }
-        board.push(row);
-        row = [];
+      solver.generateBoard(solver.puzzleString);
+      //validate coordinate and value;
+      const validateCoordinate = solver.validateCoordinate(coordinate);
+      if(validateCoordinate !== 'valid'){
+        return res.json({ error: 'Invalid coordinate'});
       }
-      solver.board = board;
-      console.log(solver.board);
-      console.log(solver.puzzleString);
-      return res.json({status:'success'});
+      if(typeof(value) != 'number' || !(value >= 1 && value <= 9)) {
+        return res.json({ error: 'Invalid value' });
+      }
+      //split coordinate into row and column;
+      return res.json({valid: true});
     });
     
   app.route('/api/solve')

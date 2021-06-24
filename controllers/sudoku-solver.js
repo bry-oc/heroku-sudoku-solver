@@ -15,19 +15,41 @@ class SudokuSolver {
     }
   }
 
-  checkRowPlacement(puzzleString, row, column, value) {
+  validateCoordinate(coordinate) {
+    const coordinateFormat = /^[A-I][1-9]$/;
+    if(!coordinate.toUpperCase().match(coordinateFormat)) {
+      return 'invalid coordinate';
+    }
+    return 'valid';
+  }
+
+  generateBoard(puzzleString) {
+    let board = [];
+    let row = [];
+    for(let i = 0; i < 9; i++) {
+      for(let j = 0; j < 9; j++){
+        row.push(puzzleString[i * 9 +j]);
+      }
+      board.push(row);
+      row = [];
+    }
+    this.board = board; 
+  }
+
+  checkRowPlacement(board, row, column, value) {
+    
 
   }
 
-  checkColPlacement(puzzleString, row, column, value) {
+  checkColPlacement(board, row, column, value) {
 
   }
 
-  checkRegionPlacement(puzzleString, row, column, value) {
+  checkRegionPlacement(board, row, column, value) {
 
   }
 
-  solve(puzzleString) {
+  solve(board) {
     
   }
 }
