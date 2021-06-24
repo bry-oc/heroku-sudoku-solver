@@ -28,7 +28,7 @@ class SudokuSolver {
     let row = [];
     for(let i = 0; i < 9; i++) {
       for(let j = 0; j < 9; j++){
-        row.push(puzzleString[i * 9 +j]);
+        row.push(puzzleString[i * 9 + j]);
       }
       board.push(row);
       row = [];
