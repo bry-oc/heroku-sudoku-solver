@@ -11,7 +11,7 @@ module.exports = function (app) {
 
   app.route('/api/check')
     .post(upload.none(), (req, res) => {
-      //check if a puzzle was sent and validate the format
+      //check if required fields were sent and validate the puzzle
       let puzzle = req.body.puzzle;
       let coordinate = req.body.coordinate;
       let value = parseInt(req.body.value);
@@ -27,10 +27,7 @@ module.exports = function (app) {
         if(validatePuzzle === 'invalid length') {
           return res.json({ error: 'Expected puzzle to be 81 characters long' });
         }
-      }
-      //populate the puzzle and board configuration
-      solver.puzzleString = puzzle;
-      solver.generateBoard(solver.puzzleString);
+      }      
       //validate coordinate and value;
       const validateCoordinate = solver.validateCoordinate(coordinate);
       if(validateCoordinate !== 'valid'){
@@ -39,6 +36,9 @@ module.exports = function (app) {
       if(typeof(value) != 'number' || !(value >= 1 && value <= 9)) {
         return res.json({ error: 'Invalid value' });
       }
+      //populate the puzzle and board configuration
+      solver.puzzleString = puzzle;
+      solver.generateBoard(solver.puzzleString);
       //split coordinate into row and column;
       const RowsEnum = Object.freeze({"A":0, "B":1, "C":2, "D":3, "E":4, "F":5, "G":6, "H":7, "I":8 });
       const row = RowsEnum[coordinate.split('')[0]];

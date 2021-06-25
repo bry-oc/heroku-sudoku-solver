@@ -37,7 +37,9 @@ class SudokuSolver {
   }
 
   checkRowPlacement(board, row, column, value) {
-    for(let i = 0; i <= 9; i++) {
+    //if the value is in the row and not already placed
+    //then it is invalid 
+    for(let i = 0; i < 9; i++) {
       if(board[row][i] === value && board[row][column] != value) {
         return 'invalid row';
       }
@@ -46,7 +48,9 @@ class SudokuSolver {
   }
 
   checkColPlacement(board, row, column, value) {
-    for(let i = 0; i <= 9; i++) {
+    //if the value is in the column and not already placed
+    //then it is invalid 
+    for(let i = 0; i < 9; i++) {
       if(board[i][column] === value && board[row][column] != value) {
         return 'invalid column';
       }
@@ -55,7 +59,33 @@ class SudokuSolver {
   }
 
   checkRegionPlacement(board, row, column, value) {
+    //identify starting row and column of 3x3 region
+    let rowVal = row;
+    let regionRowStart = rowVal % 3;
+    while(regionRowStart %3 != 0){
+      rowVal -= 1;
+      regionRowStart = rowVal % 3;
+    }
+    
+    let columnVal = column;
+    let regionColStart = columnVal % 3;
 
+    while(regionColStart % 3 != 0){
+      columnVal -= 1;
+      regionColStart = columnVal % 3;
+    }
+
+    const regionRowEnd = rowVal + 2;
+    const regionColEnd = columnVal + 2;
+
+    for(let i = rowVal; i <= regionRowEnd; i++) {
+      for(let j = columnVal; j <= regionColEnd; j++) {
+        if(board[i][j] === value && board[row][column] != value) {
+          return 'invalid region';
+        }
+      }
+      return 'valid';
+    }
   }
 
   solve(board) {
