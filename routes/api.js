@@ -63,7 +63,33 @@ module.exports = function (app) {
     });
     
   app.route('/api/solve')
-    .post((req, res) => {
+    .post(upload.none(), (req, res) => {
+      //if there is no puzzle, return error
+      let puzzle = req.body.puzzle;
 
+      if(!puzzle) {
+        return res.json({ error: 'Required field missing' });
+      }
+      //validate the puzzle
+      const validatePuzzle = solver.validate(puzzle);
+      if(validatePuzzle !== 'valid'){
+        if(validatePuzzle === 'invalid char') {
+          return res.json({ error: 'Invalid characters in puzzle' });
+        }
+        if(validatePuzzle === 'invalid length') {
+          return res.json({ error: 'Expected puzzle to be 81 characters long' });
+        }
+      }
+      //populate the puzzle and board configuration
+      solver.puzzleString = puzzle;
+      solver.generateBoard(solver.puzzleString);
+      //solve the puzzle    
+      if(solver.solve(solver.board)){
+        
+        solver.puzzleString = solver.board.flat().join('');
+        return res.json({solution: solver.puzzleString});
+      } else {
+        return res.json({ error: 'Puzzle cannot be solved' });
+      }      
     });
 };
