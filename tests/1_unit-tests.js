@@ -58,7 +58,7 @@ suite('UnitTests', () => {
             assert.equal(solver.board.flat().join(''), '135762984946381257728459613694517832812936745357824196473298561581673429269145378');
         });        
         test('Solver returns false for an incomplete, unsolvable puzzle', function(){
-            solver.puzzleString = '7..89.....5....3.4.2..4..1.5689..472...6.....1.7.5.63873.1.2.8.6..47.1..2.9.38766';
+            solver.puzzleString = '123456788.5....3.4.2..4..1.5689..472...6.....1.7.5.63873.1.2.8.6..47.1..2.9.387.6';
             solver.generateBoard(solver.puzzleString);
             assert.equal(solver.solve(solver.board), false);
         });
