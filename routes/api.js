@@ -84,8 +84,7 @@ module.exports = function (app) {
       solver.puzzleString = puzzle;
       solver.generateBoard(solver.puzzleString);
       //solve the puzzle    
-      if(solver.solve(solver.board)){
-        
+      if(solver.solve(solver.board)){        
         solver.puzzleString = solver.board.flat().join('');
         return res.json({solution: solver.puzzleString});
       } else {

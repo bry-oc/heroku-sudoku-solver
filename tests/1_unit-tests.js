@@ -41,11 +41,26 @@ suite('UnitTests', () => {
     });
     
     suite('Logic for region placement', function(){
-        test('Logic for a valid region placement', function(){
+        test('Logic handles a valid region (3x3 grid) placement', function(){
             assert.equal(solver.checkRegionPlacement(solver.board,8,4,5), 'valid');
         });
-        test('Logic for an invalid region placement', function(){
+        test('Logic handles an invalid region (3x3 grid) placement', function(){
             assert.equal(solver.checkRegionPlacement(solver.board,8,4,8), 'invalid region');
         });
     });
+
+    suite('Logic for solving', function(){
+        test('Solver returns true for an incomplete, solvable puzzle', function(){
+            assert.equal(solver.solve(solver.board), true);
+        });
+        test('Solver returns the expected solution for an incomplete puzzle', function(){
+            solver.solve(solver.board);
+            assert.equal(solver.board.flat().join(''), '135762984946381257728459613694517832812936745357824196473298561581673429269145378');
+        });        
+        test('Solver returns false for an incomplete, unsolvable puzzle', function(){
+            solver.puzzleString = '7..89.....5....3.4.2..4..1.5689..472...6.....1.7.5.63873.1.2.8.6..47.1..2.9.38766';
+            solver.generateBoard(solver.puzzleString);
+            assert.equal(solver.solve(solver.board), false);
+        });
+    })
 });
