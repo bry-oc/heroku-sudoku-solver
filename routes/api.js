@@ -44,6 +44,21 @@ module.exports = function (app) {
       const row = RowsEnum[coordinate.split('')[0]];
       const column = coordinate.split('')[1] - 1;
       //check value placement
+      let conflict = [];
+      if(solver.checkRowPlacement(solver.board, row, column, value) != 'valid'){
+        conflict.push('row');
+      }
+      if(solver.checkColPlacement(solver.board, row, column, value) != 'valid'){
+        conflict.push('column');
+      }
+      if(solver.checkRegionPlacement(solver.board, row, column, value) != 'valid'){
+        conflict.push('region');
+      }
+      //if any of the checks fail, the placement is not valid and indicate where it conflicts
+      if(conflict.length != 0){
+        return res.json({valid: false, conflict: conflict});
+      }
+      //otherwise the placement is valid
       return res.json({valid: true});
     });
     
