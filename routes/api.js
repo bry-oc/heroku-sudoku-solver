@@ -17,7 +17,7 @@ module.exports = function (app) {
       let value = parseInt(req.body.value);
 
       if(!puzzle || !coordinate || !value) {
-        return res.json({error: 'Required field missing'});
+        return res.json({ error: 'Required field(s) missing' });
       }      
       const validatePuzzle = solver.validate(puzzle);
       if(validatePuzzle !== 'valid'){
