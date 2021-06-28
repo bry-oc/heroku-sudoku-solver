@@ -14,7 +14,7 @@ module.exports = function (app) {
       //check if required fields were sent and validate the puzzle
       let puzzle = req.body.puzzle;
       let coordinate = req.body.coordinate;
-      let value = parseInt(req.body.value);
+      let value = req.body.value;
 
       if(!puzzle || !coordinate || !value) {
         return res.json({ error: 'Required field(s) missing' });
@@ -33,8 +33,10 @@ module.exports = function (app) {
       if(validateCoordinate !== 'valid'){
         return res.json({ error: 'Invalid coordinate'});
       }
-      if(typeof(value) != 'number' || !(value >= 1 && value <= 9)) {
+      if(!(value >= 1 && value <= 9)) {
         return res.json({ error: 'Invalid value' });
+      } else {
+        value = parseInt(value);
       }
       //populate the puzzle and board configuration
       solver.puzzleString = puzzle;
